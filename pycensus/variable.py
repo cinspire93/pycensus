@@ -1,6 +1,5 @@
 import requests
 from dataclasses import dataclass
-from functools import lru_cache
 
 from .utils import CRITERION, check_filters
 from typing import List, Optional, Tuple
@@ -19,7 +18,6 @@ class Variable:
     filterable_attrs = ["name", "label", "concept", "group_name"]
 
 
-@lru_cache(maxsize=2)
 def _search_variables(var_url: str,
                       regex_filters: List[Tuple[str, CRITERION]] = None,
                       and_or: str = "and") -> List[Variable]:

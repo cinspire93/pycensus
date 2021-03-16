@@ -34,12 +34,17 @@ def force_regex_filters(func: Callable[..., RT]) -> Callable[..., RT]:
 
         enforced_filters = []
         for field, criterion in rfs:
-            if not callable(criterion):
+            # if criterion is callable, keep criterion
+            # if criterion is string, use it for regex substr match in a callable returning bool
+            # otherwise raise error
+            if callable(criterion):
+                enforced_filters.append((field, criterion))
+            elif isinstance(criterion, str):
                 def match(val: str) -> bool:
                     return re.search(criterion, val, re.IGNORECASE) is not None
                 enforced_filters.append((field, match))
             else:
-                enforced_filters.append((field, criterion))
+                raise ValueError("criterion can only be a callable->bool or a string")
 
         if regex_filter_args_index < len(args):
             arg_list[regex_filter_args_index] = enforced_filters
@@ -52,8 +57,8 @@ def force_regex_filters(func: Callable[..., RT]) -> Callable[..., RT]:
 
 def check_filters(model: ClassVar, regex_filters: List[Tuple[str, CRITERION]] = None, _and: bool = True) -> bool:
     """
-    Check whether a given model (dataset, geography, group, variable) passes the given list
-    of regex filters. The filters can be combined with "and" or "or" logical operators.
+    Check whether a given model (dataset, geography, group, variable) passes the given list of regex
+    filters. The filters can be combined with "and" or "or" logical operators.
 
     :param model: Dataset, Geography, Group or Variable
     :param regex_filters: list of 2-tuple with first element being the field and second the regex

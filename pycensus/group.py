@@ -1,6 +1,5 @@
 import requests
 from dataclasses import dataclass
-from functools import lru_cache
 
 from .variable import Variable, _search_variables
 from .utils import CRITERION, check_filters
@@ -30,7 +29,6 @@ class Group:
         return _search_variables(self.var_url, regex_filters, and_or)
 
 
-@lru_cache(maxsize=2)
 def _search_groups(group_url: str,
                    regex_filters: List[Tuple[str, CRITERION]] = None,
                    and_or: str = "and") -> List[Group]:
