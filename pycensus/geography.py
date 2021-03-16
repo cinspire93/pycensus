@@ -2,8 +2,9 @@ import requests
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime
+from functools import lru_cache
 
-from .utils import CRITERION, check_filters, force_regex_filters
+from .utils import CRITERION, check_filters
 from typing import List, Optional, Tuple
 
 
@@ -55,8 +56,8 @@ class Geography:
         return for_filter + in_filter
 
 
-@force_regex_filters
-def _search_geography(geo_url: str, regex_filters: List[Tuple[str, CRITERION]] = None) -> List[Geography]:
+@lru_cache(maxsize=2)
+def _search_geography(geo_url: str, regex_filters: List[Tuple[str, CRITERION]]) -> List[Geography]:
     """
     Searches geographies returned through the geo url. Reduce outputs by specifying a list of
     2-tuple regex filters.

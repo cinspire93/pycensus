@@ -43,7 +43,7 @@ def force_regex_filters(func: Callable[..., RT]) -> Callable[..., RT]:
 
         if regex_filter_args_index < len(args):
             arg_list[regex_filter_args_index] = enforced_filters
-        elif "regex_filters" in kwargs:
+        else:
             kwargs.update({"regex_filters": enforced_filters})
         return func(*arg_list, **kwargs)
 

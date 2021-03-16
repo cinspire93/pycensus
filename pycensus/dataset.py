@@ -20,6 +20,7 @@ class Dataset:
     group_url: str
     access_url: Optional[str] = None
 
+    @force_regex_filters
     def search_geography(self,
                          regex_filters: List[Tuple[str, CRITERION]] = None) -> List[Geography]:
         """
@@ -31,6 +32,7 @@ class Dataset:
         """
         return _search_geography(self.geo_url, regex_filters)
 
+    @force_regex_filters
     def search_groups(self,
                       regex_filters: List[Tuple[str, CRITERION]] = None,
                       and_or: str = "and") -> List[Group]:
@@ -45,6 +47,7 @@ class Dataset:
         """
         return _search_groups(self.group_url, regex_filters, and_or)
 
+    @force_regex_filters
     def search_variables(self,
                          regex_filters: List[Tuple[str, CRITERION]] = None,
                          and_or: str = "and") -> List[Variable]:
