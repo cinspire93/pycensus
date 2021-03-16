@@ -1,2 +1,2 @@
 # pycensus
-census API written in python
+U.S. census API package written in Python. Requires Python>=3.7.

@@ -22,6 +22,16 @@ class Variable:
 def _search_variables(var_url: str,
                       regex_filters: List[Tuple[str, CRITERION]] = None,
                       and_or: str = "and") -> List[Variable]:
+    """
+    Searches variables returned through the variable url. Reduce outputs by specifying
+    a list of 2-tuple regex filters and the and/or logical operator used to combine said
+    filters.
+
+    :param var_url: the url containing all variables, provided by groups or datasets
+    :param regex_filters: list of 2-tuple with first element being the field and second the regex
+    :param and_or: whether to use "and" or "or" to join regex_filters
+    :return: list of Variables
+    """
     resp = requests.get(var_url)
     resp.raise_for_status()
 

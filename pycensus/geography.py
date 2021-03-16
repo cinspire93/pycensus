@@ -25,6 +25,13 @@ class Geography:
         self.complexity = len(self.requires) + 1
 
     def filter_to_params(self, geo_filters: Optional[List[Tuple[str, str]]] = None) -> List[Tuple[str, str]]:
+        """
+        Converts a given list of 2-tuple geography filters to a list of tuples used by
+        the requests library to create query params.
+
+        :param geo_filters: list of 2-tuple with first element being the geo element and the second geo ids
+        :return: list of 2-tuple request query parameters
+        """
         if geo_filters is None:
             return [("for", f"{self.name}:*")]
 
@@ -50,6 +57,14 @@ class Geography:
 
 @force_regex_filters
 def _search_geography(geo_url: str, regex_filters: List[Tuple[str, CRITERION]] = None) -> List[Geography]:
+    """
+    Searches geographies returned through the geo url. Reduce outputs by specifying a list of
+    2-tuple regex filters.
+
+    :param geo_url: the url containing all geographies, provided by datasets
+    :param regex_filters: list of 2-tuple with first element being the field and second the regex
+    :return: list of Geographies
+    """
     resp = requests.get(geo_url)
     resp.raise_for_status()
 
