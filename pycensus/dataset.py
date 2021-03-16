@@ -5,7 +5,7 @@ from itertools import chain
 from .geography import Geography, _search_geography
 from .group import Group, _search_groups
 from .variable import Variable, _search_variables
-from pycensus.utils import *
+from .utils import *
 from typing import List, Optional, Tuple
 
 

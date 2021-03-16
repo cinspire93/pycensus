@@ -1,7 +1,7 @@
 import requests
 from dataclasses import dataclass
 
-from pycensus.utils import CRITERION, check_filters, force_regex_filters
+from .utils import CRITERION, check_filters, force_regex_filters
 from typing import List, Optional, Tuple
 
 

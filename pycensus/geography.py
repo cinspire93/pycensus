@@ -3,7 +3,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime
 
-from pycensus.utils import CRITERION, check_filters, force_regex_filters
+from .utils import CRITERION, check_filters, force_regex_filters
 from typing import List, Optional, Tuple
 
 
