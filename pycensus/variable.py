@@ -21,7 +21,7 @@ class Variable:
 @force_regex_filters
 def _search_variables(var_url: str,
                       regex_filters: List[Tuple[str, CRITERION]] = None,
-                      collective_eval: str = "and") -> List[Variable]:
+                      and_or: str = "and") -> List[Variable]:
     resp = requests.get(var_url)
     resp.raise_for_status()
 
@@ -42,6 +42,6 @@ def _search_variables(var_url: str,
                 predicate_type=info.get("predicateType", ""),
                 attributes=attrs,
             )
-            if check_filters(model, regex_filters=regex_filters, _and=(collective_eval == "and")):
+            if check_filters(model, regex_filters=regex_filters, _and=(and_or == "and")):
                 hits.append(model)
     return hits

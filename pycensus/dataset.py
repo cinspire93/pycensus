@@ -25,13 +25,13 @@ class Dataset:
 
     def search_groups(self,
                       regex_filters: List[Tuple[str, CRITERION]] = None,
-                      collective_eval: str = "and") -> List[Group]:
-        return _search_groups(self.group_url, regex_filters, collective_eval)
+                      and_or: str = "and") -> List[Group]:
+        return _search_groups(self.group_url, regex_filters, and_or)
 
     def search_variables(self,
                          regex_filters: List[Tuple[str, CRITERION]] = None,
-                         collective_eval: str = "and") -> List[Variable]:
-        return _search_variables(self.var_url, regex_filters, collective_eval)
+                         and_or: str = "and") -> List[Variable]:
+        return _search_variables(self.var_url, regex_filters, and_or)
 
     def download(self,
                  geo_level: Optional[str] = None,

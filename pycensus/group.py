@@ -16,14 +16,14 @@ class Group:
 
     def search_variables(self,
                          regex_filters: List[Tuple[str, CRITERION]] = None,
-                         collective_eval: str = "and") -> List[Variable]:
-        return _search_variables(self.var_url, regex_filters, collective_eval)
+                         and_or: str = "and") -> List[Variable]:
+        return _search_variables(self.var_url, regex_filters, and_or)
 
 
 @force_regex_filters
 def _search_groups(group_url: str,
                    regex_filters: List[Tuple[str, CRITERION]] = None,
-                   collective_eval: str = "and") -> List[Group]:
+                   and_or: str = "and") -> List[Group]:
     resp = requests.get(group_url)
     resp.raise_for_status()
 
@@ -36,6 +36,6 @@ def _search_groups(group_url: str,
                 description=info["description"],
                 var_url=info["variables"],
             )
-            if check_filters(model, regex_filters=regex_filters, _and=(collective_eval == "and")):
+            if check_filters(model, regex_filters=regex_filters, _and=(and_or == "and")):
                 hits.append(model)
     return hits
