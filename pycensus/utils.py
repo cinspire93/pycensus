@@ -55,7 +55,7 @@ def force_regex_filters(func: Callable[..., RT]) -> Callable[..., RT]:
     return wrapper
 
 
-def check_filters(model: ClassVar, regex_filters: List[Tuple[str, CRITERION]] = None, _and: bool = True) -> bool:
+def check_filters(model: ClassVar, regex_filters: List[Tuple[str, CRITERION]], _and: bool = True) -> bool:
     """
     Check whether a given model (dataset, geography, group, variable) passes the given list of regex
     filters. The filters can be combined with "and" or "or" logical operators.
@@ -65,6 +65,10 @@ def check_filters(model: ClassVar, regex_filters: List[Tuple[str, CRITERION]] = 
     :param _and: whether to use "and" or "or" logical operator
     :return: boolean indicating whether model passed filter
     """
+    filter_attrs = getattr(model, "filterable_attrs")
+    if not filter_attrs or not isinstance(filter_attrs, list):
+        raise AttributeError(f"model `{model.__class__.__name__}` must have a "
+                             f"`filterable_attrs` attribute of list type")
     filter_evals = []
     for field, match in regex_filters:
         if field not in model.filterable_attrs:
