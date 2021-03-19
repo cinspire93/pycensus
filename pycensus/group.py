@@ -2,7 +2,7 @@ import requests
 from dataclasses import dataclass
 
 from .variable import Variable, _search_variables
-from .utils import CRITERION, check_filters
+from .utils import CRITERION, check_filters, force_regex_filters
 from typing import List, Tuple
 
 
@@ -14,6 +14,7 @@ class Group:
 
     filterable_attrs = ["name", "description"]
 
+    @force_regex_filters
     def search_variables(self,
                          regex_filters: List[Tuple[str, CRITERION]] = None,
                          and_or: str = "and") -> List[Variable]:

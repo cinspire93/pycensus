@@ -33,12 +33,15 @@ class Geography:
         :return: list of 2-tuple request query parameters
         """
         if geo_filters is None:
-            return [("for", f"{self.name}:*")]
+            return [("for", f"{self.name}:*")] + [("in", f"{r}:*") for r in self.requires]
 
         filter_dict = defaultdict(list)
         for geo_loc, value in geo_filters:
             filter_dict[geo_loc].append(value)
         filters = {k: ",".join(v) for k, v in filter_dict.items()}
+
+        if self.name not in filters:
+            filters[self.name] = "*"
 
         required_fields = [self.name] + self.requires
         for f in required_fields:

@@ -37,12 +37,14 @@ def force_regex_filters(func: Callable[..., RT]) -> Callable[..., RT]:
             # if criterion is callable, keep criterion
             # if criterion is string, use it for regex substr match in a callable returning bool
             # otherwise raise error
-            if callable(criterion):
+            if callable(criterion) and isinstance(criterion("test"), bool):
                 enforced_filters.append((field, criterion))
             elif isinstance(criterion, str):
-                def match(val: str) -> bool:
-                    return re.search(criterion, val, re.IGNORECASE) is not None
-                enforced_filters.append((field, match))
+                # keyword argument for regex to force early binding so each
+                # criterion gets its own unique regex match function
+                def regex_match(val: str, regex: str = criterion) -> bool:
+                    return re.search(regex, val, re.IGNORECASE) is not None
+                enforced_filters.append((field, regex_match))
             else:
                 raise ValueError("criterion can only be a callable->bool or a string")
 
