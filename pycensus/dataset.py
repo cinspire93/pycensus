@@ -1,4 +1,5 @@
 import requests
+import urllib.parse
 from dataclasses import dataclass
 from itertools import chain
 
@@ -119,7 +120,9 @@ class Dataset:
         batch_outputs = []
         for i, batch in enumerate(var_batches, 1):
             params = [("get", ",".join(batch))] + geo_params
-            resp = requests.get(self.access_url, params=params)
+            # prevent over-encoding so it's compatible with census API
+            params_str = urllib.parse.urlencode(params, safe="&")
+            resp = requests.get(self.access_url, params=params_str)
             resp.raise_for_status()
             results = resp.json()
             # geo complexity indicates the number of columns reserved by the API
