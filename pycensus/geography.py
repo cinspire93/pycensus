@@ -32,8 +32,7 @@ class Geography:
         :param geo_filters: list of 2-tuple with first element being the geo element and the second geo ids
         :return: list of 2-tuple request query parameters
         """
-        if geo_filters is None:
-            return [("for", f"{self.name}:*")] + [("in", f"{r}:*") for r in self.requires]
+        geo_filters = geo_filters or []
 
         filter_dict = defaultdict(list)
         for geo_loc, value in geo_filters:

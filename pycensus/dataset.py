@@ -123,7 +123,12 @@ class Dataset:
             # prevent over-encoding so it's compatible with census API
             params_str = urllib.parse.urlencode(params, safe="&")
             resp = requests.get(self.access_url, params=params_str)
-            resp.raise_for_status()
+            # print more informative error message using resp.text as well
+            try:
+                resp.raise_for_status()
+            except requests.exceptions.HTTPError as e:
+                print(f"http error: {e}\nlikely cause: {resp.text}")
+                return []
             results = resp.json()
             # geo complexity indicates the number of columns reserved by the API
             # to store geography tiers. Since it will be included in every batch
